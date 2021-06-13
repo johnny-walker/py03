@@ -15,6 +15,8 @@ class NewsViewer(rt.ProgramBase):
 
     def __init__(self, root, width=640, height=480):
         super().__init__(root, width, height)
+        self.root.resizable(False, False)
+        self.root.title("Yahoo Sports News")
 
     def loadNews(self):
         # 定義網址

@@ -14,7 +14,6 @@ class ProgramBase(tk.Frame):
         geometry = '{0:d}x{1:d}'.format(root.width, root.height) 
         root.geometry(geometry)    # ex. root.geometry('600x400')
         root.title("window")
-        root.resizable(False, False)
 
         # bind events
         root.bind_all('<Key>', self.onKey)
