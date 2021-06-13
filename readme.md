@@ -1,3 +1,4 @@
 ## web crawler
-Yahoo News Sports爬文200筆
-keyword 篩選
+Yahoo News Sports 爬文20筆 \
+show news on list \
+click to open web browser to visit the URL

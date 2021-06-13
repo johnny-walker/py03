@@ -1,7 +1,7 @@
 import os
 import requests
-import re
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 def check_dir(dir):
     if not os.path.isdir(dir):
@@ -12,9 +12,11 @@ def check_dir(dir):
 base_url = "https://tw.news.yahoo.com"
 url = "https://tw.news.yahoo.com/sports/archive/"
 
-#向網址要回網頁原始碼，並透過 BeautifulSoup 解析
+'''
+向網址要回網頁原始碼，並透過 BeautifulSoup 解析
 res = requests.get(url)
 soup = BeautifulSoup(res.text, 'html.parser')
+'''
 
 start = 0
 pages = range(start, start+1)  
@@ -37,7 +39,7 @@ for finance in sports_all:
             title = link.get_text()
             print(title)
             # filter out 一覽表
-            if title.find("一覽表") < 0 and link.get('href') != '#':
+            if link.get('href') != '#':
                 full_url = base_url + link.get("href") 
                 links.append( (title, full_url) )
                 print(full_url)
@@ -53,8 +55,11 @@ check_dir(output)
 total = start + len(links)
 current = start
 restart = 0
-index_file_path = 'index-{start}.txt'.format(start=current)
-index_file_path = os.path.join(output, index_file_path)
+
+now = datetime.now()
+dt_string = now.strftime("%d-%m-%Y-%H-%M-%S")
+index_file = 'index-{0:s}.txt'.format(dt_string)
+index_file_path = os.path.join(output, index_file)
 print(index_file_path)
 
 with open(index_file_path, 'w') as index_file:

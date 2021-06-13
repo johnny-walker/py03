@@ -1,0 +1,46 @@
+# https://www.rs-online.com/designspark/python-tkinter-cn#_Toc61529916
+
+import tkinter as tk
+
+class ProgramBase(tk.Frame):
+    def __init__(self, root, width=600, height=400):
+        super().__init__(root)
+        self.root = root
+        self.frame = self
+        
+        # configure window
+        root.width = width
+        root.height = height
+        geometry = '{0:d}x{1:d}'.format(root.width, root.height) 
+        root.geometry(geometry)    # ex. root.geometry('600x400')
+        root.title("window")
+        root.resizable(False, False)
+
+        # bind events
+        root.bind_all('<Key>', self.onKey)
+
+    def run(self):
+        self.root.mainloop()
+
+    def onKey(self, event):
+        if event.char == event.keysym or len(event.char) == 1:
+            if event.keysym == 'Right':
+                print("key Right") 
+            elif event.keysym == 'Left':
+                 print("key Left") 
+            elif event.keysym == 'Space':
+                 print("key Space") 
+            elif event.keysym == 'Escape':
+                print("key Escape") 
+                self.root.destroy()
+
+if __name__ == '__main__':
+    program = ProgramBase(tk.Tk())
+    program.run()
+    print("quit, bye bye ...")
+
+
+
+
+
+        
