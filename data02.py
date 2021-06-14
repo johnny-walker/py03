@@ -80,7 +80,7 @@ class NewsViewer(rt.ProgramBase):
         divMsg.grid(row=1, column=0, padx=padding, pady=padding, sticky=align_mode)
 
         defineLayout(self.root)
-        defineLayout(divData, 5, 1)
+        defineLayout(divData, 1, 1)
         defineLayout(divMsg, 1, 1)
 
         # label as container of image
