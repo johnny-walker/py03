@@ -6,7 +6,6 @@ import webbrowser
 # import root window
 import Root as rt
 
-
 class NewsViewer(rt.ProgramBase):
     sports_all = []
     links = []
@@ -34,8 +33,8 @@ class NewsViewer(rt.ProgramBase):
 
         for page in pages:
             print(url + str(page) + ".html")
-            yahoo_r = requests.get(url + str(page) + ".html")
-            yahoo_soup = BeautifulSoup(yahoo_r.text, 'html.parser')
+            yahoo_res = requests.get(url + str(page) + ".html")
+            yahoo_soup = BeautifulSoup(yahoo_res.text, 'html.parser')
             sports = yahoo_soup.findAll('h3')
             self.sports_all.append(sports)
 
@@ -57,29 +56,14 @@ class NewsViewer(rt.ProgramBase):
                     link = None
         print(len(self.links))
 
-        # save index file
-        '''
-        now = datetime.now()
-        dt_string = now.strftime("%d-%m-%Y-%H-%M-%S")
-        index_file = 'index-{0:s}.txt'.format(dt_string)
-        self.check_dir(index_file)         
-        '''
-
-    def defineLayout(self, widgets, cols=1, rows=1):
-        def method(widget):
+    def loadLayout(self):
+        def defineLayout(widget, cols=1, rows=1):
+            #https://stackoverflow.com/questions/45847313/what-does-weight-do-in-tkinter
             for c in range(cols):    
                 widget.columnconfigure(c, weight=1)
             for r in range(rows):
                 widget.rowconfigure(r, weight=1)
-            return
 
-        if type(widgets)==list:        
-            [ method(wgt) for wgt in widgets ]
-        else:
-            wgt = widgets
-            method(wgt) 
-
-    def loadLayout(self):
         align_mode = 'nswe'
         padding= 3
         msgHeight = 40
@@ -95,9 +79,9 @@ class NewsViewer(rt.ProgramBase):
         divData.grid(row=0, column=0, padx=padding, pady=padding, sticky=align_mode)
         divMsg.grid(row=1, column=0, padx=padding, pady=padding, sticky=align_mode)
 
-        self.defineLayout(self.root)
-        self.defineLayout(divData, 20, 1)
-        self.defineLayout(divMsg, 1, 1)
+        defineLayout(self.root)
+        defineLayout(divData, 5, 1)
+        defineLayout(divMsg, 1, 1)
 
         # label as container of image
         self.divData = divData
@@ -131,6 +115,8 @@ class NewsViewer(rt.ProgramBase):
                              width=self.root.width,
                              text=data[0] )
         lblItem.grid(row=no+1, sticky='w')
+
+        # bind mouse events
         lblItem.bind("<Enter>", self.onEnter)
         lblItem.bind("<Leave>", self.onLeave)
         lblItem.bind("<Button-1>", self.onClick)
