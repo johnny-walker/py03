@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # 指定要抓取的網頁URL
-url = "https://www.ptt.cc/bbs/hotboards.html"
+url = 'https://www.ptt.cc/bbs/hotboards.html'
 urlbase = 'https://www.ptt.cc'
 
 # 使用requests.get() 來得到網頁回傳內容
@@ -24,7 +24,7 @@ web_content = r.text
 # 以 Beautiful Soup 解析 HTML 程式碼 : 
 soup = BeautifulSoup(web_content, 'html.parser')
  
-boardElements = soup.find_all('a', class_="board")
+boardElements = soup.find_all('a', class_='board')
 boardNames = [e.text for e in boardElements]
 boardURLs = []
 for index in range(len(boardNames)):
@@ -32,7 +32,7 @@ for index in range(len(boardNames)):
     boardURLs.append(url)
 
 # 找出所有class為"board-name"的div elements
-boardNameElements = soup.find_all('div', class_="board-name")
+boardNameElements = soup.find_all('div', class_='board-name')
 boardNames = [e.text for e in boardNameElements]
 #print(boardNames)
 
@@ -50,19 +50,17 @@ for pop, bn in zip(popularities, boardNames):
     print(pop, bn)
 
 # 在目前的目錄下尋找一個叫ptt.db的檔案並建立連線, 若不存在則會在你目錄下自動建立這個檔案.
-# 以SQL的概念來說, 它就是一個"database"
-
-dbExist = os.path.exists("ptt.db")
+dbPath = 'ptt.db'
+dbExist = os.path.exists(dbPath)
 if not dbExist:
-    connection = sqlite3.connect("ptt.db")
+    connection = sqlite3.connect(dbPath)
     # 後面都用這個 cursor來做SQL操作.
     cursor = connection.cursor()
-    sqlstmt = '''CREATE TABLE records (boardnames text, popularity int, url, timestamp datetime)'''
+    sqlstmt = 'CREATE TABLE records (boardnames text, popularity int, url text)'
     cursor.execute(sqlstmt)
 
-    now_dt = datetime.datetime.now()
     for bn, pop, url in zip(boardNames, popularities, boardURLs):
-        cursor.execute('INSERT INTO records VALUES (?,?,?,?)', (bn, pop, url, now_dt))
+        cursor.execute('INSERT INTO records VALUES (?,?,?)', (bn, pop, url))
     
     # 將指令送出, 確保前述所有操作已生效
     connection.commit()
